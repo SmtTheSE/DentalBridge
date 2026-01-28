@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+python-multipart
+pydantic
+google-generativeai
+pdfplumber
+sqlalchemy
+pytesseract
+pdf2image
+python-dotenv
