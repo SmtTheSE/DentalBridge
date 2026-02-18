@@ -261,22 +261,25 @@ const chatSection = document.getElementById('chat-container');
 const chatHistory = document.getElementById('chat-history');
 const chatInput = document.getElementById('chat-input');
 const chatSendBtn = document.getElementById('chat-send-btn');
-let activePlanId = null;
 
 // Enable chat after save
-function enableChat(planId) {
-    activePlanId = planId;
+function enableChat() {
     chatSection.hidden = false;
     // Scroll to chat
     setTimeout(() => {
         chatSection.scrollIntoView({ behavior: 'smooth' });
     }, 500);
+
+    // Greeting if empty
+    if (chatHistory.children.length === 0) {
+        appendMessage("Secure Link Established. I have access to the treatment plan. How can I assist?", 'ai');
+    }
 }
 
 // Send Message
 async function sendChatMessage() {
     const message = chatInput.value.trim();
-    if (!message || !activePlanId) return;
+    if (!message) return; // Removed activePlanId check
 
     // Append User Message
     appendMessage(message, 'user');
@@ -287,12 +290,15 @@ async function sendChatMessage() {
     // Add loading indicator
     const loadingId = appendMessage("Thinking...", 'ai', true);
 
+    const patientName = patientNameInput.value.trim() || 'Unknown Patient';
+
     try {
         const response = await fetch(`${API_URL}/chat`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                plan_id: activePlanId,
+                items: currentItems, // Send full context
+                patient_name: patientName,
                 message: message
             })
         });
@@ -308,6 +314,7 @@ async function sendChatMessage() {
 
     } catch (error) {
         removeMessage(loadingId);
+        console.error(error);
         showNotification("Consultant Unavailable. Try again.", "error");
         appendMessage("CONNECTION_LOST... PLEASE RETRY.", 'ai');
     } finally {
