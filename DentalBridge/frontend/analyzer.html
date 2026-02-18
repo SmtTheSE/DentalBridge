@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DentalBridge // AI Analysis</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>DentalBridge™ <span
+                    style="font-size: 0.5em; vertical-align: middle; color: var(--accent-color);">[BETA]</span></h1>
+        </header>
+
+        <section id="upload-section" class="upload-section">
+            <p style="margin-bottom: 1rem;">UPLOAD_TREATMENT_PLAN_SOURCE</p>
+            <!-- Drop zone logic is handled by wrapper or direct input in this simplified design -->
+            <div id="drop-zone">
+                <input type="file" id="file-input" accept=".pdf, .jpg, .jpeg, .png, .heic">
+            </div>
+            <!-- browse-btn and file-name are part of the old logic, we can keep them or simplify. 
+                 The new CSS targets input[type=file] directly. 
+                 To keep app.js happy, we'll keep the IDs but maybe hide the manual 'browse' button if the input is styled. -->
+            <p id="file-name" style="margin: 0.5rem 0; font-size: 0.8rem; color: var(--accent-color);"></p>
+            <button id="browse-btn" class="hidden">BROWSE (LEGACY)</button>
+            <!-- Hidden because standard input is styled -->
+            <button id="analyze-btn" disabled>INITIALIZE_ANALYSIS</button>
+        </section>
+
+        <section id="loading-section" class="hidden">
+            <div id="terminal-output" class="terminal-loader">
+                <!-- JS will inject lines here -->
+            </div>
+        </section>
+
+        <section id="results-section" class="hidden">
+            <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 2rem;">
+                <h2>ANALYSIS_module_01</h2>
+                <button id="reset-btn" style="padding: 0.5rem 1rem; font-size: 0.8rem;">RESET</button>
+            </div>
+
+            <div id="results-container" class="plan-items">
+                <!-- Items will be injected here -->
+            </div>
+
+            <div id="save-section" class="upload-section" style="margin-top: 3rem;">
+                <p style="margin-bottom: 1rem;">SESSION_EXPORT</p>
+                <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                    <input type="text" id="patient-name" placeholder="ENTER_PATIENT_ID_OR_NAME" style="flex: 1;">
+                    <button id="save-btn">FINALIZE_ANALYSIS</button>
+                    <button id="download-pdf-btn" disabled>DOWNLOAD_PDF</button>
+                </div>
+            </div>
+
+            <!-- AI Consultant Chat -->
+            <div id="chat-container" class="chat-section hidden">
+                <h3>EXTERNAL_CONSULTANT_LINK</h3>
+                <div id="chat-history" class="chat-history">
+                    <div class="chat-message chat-ai">
+                        SYSTEM: Secure Link Established. I have access to the current treatment plan. How can I assist?
+                    </div>
+                </div>
+                <div class="chat-input-area">
+                    <input type="text" id="chat-input" placeholder="ASK_QUESTION...">
+                    <button id="chat-send-btn">SEND</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Notification Container -->
+    <div id="notification-area" class="notification-overlay"></div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>

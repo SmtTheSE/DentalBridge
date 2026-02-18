@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DentalBridge // Intro</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body.intro-page {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            /* Header top, Footer bottom */
+            height: 100vh;
+            padding: 2rem;
+            overflow: hidden;
+        }
+
+        .intro-content {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .enter-btn {
+            font-size: 4rem;
+            /* Giant Icon */
+            color: var(--text-color);
+            text-decoration: none;
+            transition: transform 0.3s ease, color 0.3s ease;
+            cursor: pointer;
+            border: none;
+            background: none;
+        }
+
+        .enter-btn:hover {
+            transform: scale(1.1);
+            color: var(--accent-color);
+        }
+
+        .intro-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            border-top: 1px solid var(--text-color);
+            padding-top: 1rem;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body class="intro-page">
+    <header style="display: flex; justify-content: space-between; align-items: center;">
+        <h1>DENTALBRIDGE™ <span
+                style="font-size: 0.5em; vertical-align: middle; color: var(--accent-color);">[BETA]</span></h1>
+        <div style="font-size: 0.8rem;">SESSION_IS_ACTIVE</div>
+    </header>
+
+    <div class="intro-content">
+        <a href="analyzer.html" class="enter-btn" title="ENTER_SYSTEM">
+            <i class="fa-solid fa-arrow-right-long"></i>
+        </a>
+        <p style="margin-top: 1rem; font-size: 0.7rem; letter-spacing: 2px;">CLICK_TO_INITIALIZE</p>
+    </div>
+
+    <footer class="intro-footer">
+        <div>
+            COOKED BY SITT MIN THAR
+        </div>
+        <div style="text-align: right;">
+            SYSTEM_STATUS: <span style="color: var(--accent-color);">ONLINE</span><br>
+            MODE: <span style="color: var(--accent-color);">IN_MEMORY</span>
+        </div>
+    </footer>
+</body>
+
+</html>

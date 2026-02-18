@@ -1,0 +1,12 @@
+fastapi
+uvicorn
+python-multipart
+google-generativeai
+python-dotenv
+reportlab
+pillow-heif
+pillow
+mmfont
+pdfplumber
+python-dotenv
+reportlab
