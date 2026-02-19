@@ -1,15 +1,37 @@
-from fastapi import FastAPI, HTTPException, UploadFile, File, Response, Form
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
-from pydantic import BaseModel, Field
-from typing import List, Optional
-import os
-import io
-import json
 import logging
-import pdfplumber
-from PIL import Image
-from reportlab.pdfbase.ttfonts import TTFont
+import sys
+
+# Configure logging immediately
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+try:
+    from fastapi import FastAPI, HTTPException, UploadFile, File, Response, Form
+    from fastapi.middleware.cors import CORSMiddleware
+    from fastapi.responses import JSONResponse
+    from pydantic import BaseModel, Field
+    from typing import List, Optional
+    import os
+    import io
+    import json
+    import pdfplumber
+    from PIL import Image
+    from dotenv import load_dotenv
+    import google.generativeai as genai
+
+    from reportlab.pdfgen import canvas
+    from reportlab.lib.pagesizes import letter
+    from reportlab.lib import colors
+    from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
+    from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+    from reportlab.lib.units import inch
+    from reportlab.pdfbase import pdfmetrics
+    from reportlab.pdfbase.pdfmetrics import registerFontFamily
+    from reportlab.pdfbase.ttfonts import TTFont
+except Exception as e:
+    logger.critical(f"CRITICAL IMPORT ERROR: {e}")
+    # We will let the app fail, but hopefully logs capture this
+    print(f"CRITICAL IMPORT ERROR: {e}")
 
 # Safe Imports (Optional Dependencies)
 try:
@@ -25,9 +47,6 @@ try:
 except ImportError:
     HEIC_AVAILABLE = False
 
-# Configure logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
 
 # Resolve absolute path for fonts
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
