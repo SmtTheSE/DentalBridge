@@ -9,23 +9,21 @@ import json
 import logging
 import pdfplumber
 from PIL import Image
-import pillow_heif
-# Register HEIC opener
-pillow_heif.register_heif_opener()
-
-from dotenv import load_dotenv
-import google.generativeai as genai
-
-from reportlab.pdfgen import canvas
-from reportlab.lib.pagesizes import letter
-from reportlab.lib import colors
-from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
-from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-from reportlab.lib.units import inch
-from reportlab.pdfbase import pdfmetrics
-from reportlab.pdfbase.pdfmetrics import registerFontFamily
 from reportlab.pdfbase.ttfonts import TTFont
-import mmfont.converter
+
+# Safe Imports (Optional Dependencies)
+try:
+    import mmfont.converter
+    MMFONT_AVAILABLE = True
+except ImportError:
+    MMFONT_AVAILABLE = False
+    
+try:
+    import pillow_heif
+    pillow_heif.register_heif_opener()
+    HEIC_AVAILABLE = True
+except ImportError:
+    HEIC_AVAILABLE = False
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -218,6 +216,10 @@ async def analyze_file(file: UploadFile = File(...)):
         elif filename.endswith((".jpg", ".jpeg", ".png", ".heic", ".webp")) or file.content_type.startswith("image/"):
             try:
                 if filename.endswith(".heic"):
+                    if not HEIC_AVAILABLE:
+                        logger.warning("HEIC dependency not available. Skipping image.")
+                        return []
+                        
                     image = Image.open(io.BytesIO(content))
                     img_byte_arr = io.BytesIO()
                     image.save(img_byte_arr, format='JPEG')
@@ -287,9 +289,8 @@ def build_pdf_buffer(plan_context: PlanContext) -> io.BytesIO:
     zawgyi_style = ParagraphStyle('ZawgyiStyle', parent=normal_style, fontName=font_name, fontSize=10, leading=14)
     
     def to_zawgyi(text):
-        if not text: return ""
-        # If we don't have the font, don't convert to weird encoding
-        if font_name != 'Zawgyi-One': return text 
+        if not text or not MMFONT_AVAILABLE or font_name != 'Zawgyi-One': 
+            return text
         try:
             return mmfont.converter.uni512zg1(text)
         except:
