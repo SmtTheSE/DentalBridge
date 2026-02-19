@@ -5,4 +5,4 @@ venv/
 node_modules/
 .DS_Store
 *.pdf
-fonts/
+# fonts/ is now tracked so Zawgyi font deploys to Vercel
