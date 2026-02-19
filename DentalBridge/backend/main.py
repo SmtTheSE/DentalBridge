@@ -173,9 +173,9 @@ async def call_llm(content_parts: list) -> List[DentalItemPydantic]:
 
     content = await try_generate("gemini-2.0-flash", True)
     if not content:
-        content = await try_generate("gemini-1.5-flash-latest", True)
+        content = await try_generate("gemini-1.5-flash", True)
     if not content:
-        content = await try_generate("gemini-1.5-pro-latest", True)
+        content = await try_generate("gemini-1.5-pro", True)
         
     if not content:
         logger.error(f"All Gemini models failed. Errors: {errors}")
