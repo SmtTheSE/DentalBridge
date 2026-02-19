@@ -31,24 +31,33 @@ import mmfont.converter
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+# Resolve absolute path for fonts
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+FONTS_DIR = os.path.join(BASE_DIR, "fonts")
+ZAWGYI_FONT_PATH = os.path.join(FONTS_DIR, "Zawgyi-One.ttf")
+
 # Create fonts directory if not exists
-if not os.path.exists("fonts"):
-    os.makedirs("fonts")
+if not os.path.exists(FONTS_DIR):
+    os.makedirs(FONTS_DIR)
     
 # Register Zawgyi Font
 try:
-    if os.path.exists('fonts/Zawgyi-One.ttf'):
-        pdfmetrics.registerFont(TTFont('Zawgyi-One', 'fonts/Zawgyi-One.ttf'))
+    if os.path.exists(ZAWGYI_FONT_PATH):
+        pdfmetrics.registerFont(TTFont('Zawgyi-One', ZAWGYI_FONT_PATH))
         registerFontFamily('Zawgyi-One', normal='Zawgyi-One', bold='Zawgyi-One', italic='Zawgyi-One', boldItalic='Zawgyi-One')
-        logger.info("Zawgyi Font Registered Successfully")
+        logger.info(f"Zawgyi Font Registered Successfully from {ZAWGYI_FONT_PATH}")
     else:
-        logger.warning("Zawgyi font not found in fonts/ directory.")
+        logger.warning(f"Zawgyi font not found at {ZAWGYI_FONT_PATH}")
 except Exception as e:
     logger.error(f"Failed to register Zawgyi font: {e}")
 
 load_dotenv()
 
-app = FastAPI(title="DentalBridge API (Stateless)")
+# Determine if running on Vercel
+is_vercel = os.environ.get('VERCEL') == '1'
+root_path = "/api" if is_vercel else ""
+
+app = FastAPI(title="DentalBridge API (Stateless)", root_path=root_path)
 
 app.add_middleware(
     CORSMiddleware,

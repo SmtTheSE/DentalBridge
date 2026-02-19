@@ -909,3 +909,39 @@ INFO:main:Attempting LLM with model: gemini-flash-latest, json_mode: True
 INFO:     127.0.0.1:62686 - "POST /analyze HTTP/1.1" 200 OK
 INFO:     127.0.0.1:62698 - "OPTIONS /generate-pdf HTTP/1.1" 200 OK
 INFO:     127.0.0.1:62698 - "POST /generate-pdf HTTP/1.1" 200 OK
+WARNING:  WatchFiles detected changes in 'main.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [63194]
+/Users/sittminthar/Downloads/DentalBridge-master/DentalBridge/backend/main.py:17: FutureWarning: 
+
+All support for the `google.generativeai` package has ended. It will no longer be receiving 
+updates or bug fixes. Please switch to the `google.genai` package as soon as possible.
+See README for more details:
+
+https://github.com/google-gemini/deprecated-generative-ai-python/blob/main/README.md
+
+  import google.generativeai as genai
+INFO:main:Zawgyi Font Registered Successfully from /Users/sittminthar/Downloads/DentalBridge-master/DentalBridge/backend/fonts/Zawgyi-One.ttf
+INFO:     Started server process [66436]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'main.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [66436]
+/Users/sittminthar/Downloads/DentalBridge-master/DentalBridge/backend/main.py:17: FutureWarning: 
+
+All support for the `google.generativeai` package has ended. It will no longer be receiving 
+updates or bug fixes. Please switch to the `google.genai` package as soon as possible.
+See README for more details:
+
+https://github.com/google-gemini/deprecated-generative-ai-python/blob/main/README.md
+
+  import google.generativeai as genai
+INFO:main:Zawgyi Font Registered Successfully from /Users/sittminthar/Downloads/DentalBridge-master/DentalBridge/backend/fonts/Zawgyi-One.ttf
+INFO:     Started server process [66466]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.

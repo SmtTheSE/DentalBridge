@@ -2,22 +2,22 @@
     "version": 2,
     "builds": [
         {
-            "src": "backend/main.py",
+            "src": "DentalBridge/backend/main.py",
             "use": "@vercel/python"
         },
         {
-            "src": "frontend/**",
+            "src": "DentalBridge/frontend/**",
             "use": "@vercel/static"
         }
     ],
     "routes": [
         {
             "src": "/api/(.*)",
-            "dest": "backend/main.py"
+            "dest": "DentalBridge/backend/main.py"
         },
         {
             "src": "/(.*)",
-            "dest": "frontend/$1"
+            "dest": "DentalBridge/frontend/$1"
         }
     ]
 }
