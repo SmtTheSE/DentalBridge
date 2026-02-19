@@ -977,3 +977,57 @@ INFO:main:Zawgyi Font Registered Successfully from /Users/sittminthar/Downloads/
 INFO:     Started server process [66901]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'main.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [66901]
+/Users/sittminthar/Downloads/DentalBridge-master/DentalBridge/backend/main.py:17: FutureWarning: 
+
+All support for the `google.generativeai` package has ended. It will no longer be receiving 
+updates or bug fixes. Please switch to the `google.genai` package as soon as possible.
+See README for more details:
+
+https://github.com/google-gemini/deprecated-generative-ai-python/blob/main/README.md
+
+  import google.generativeai as genai
+INFO:main:Zawgyi Font Registered Successfully from /Users/sittminthar/Downloads/DentalBridge-master/DentalBridge/backend/fonts/Zawgyi-One.ttf
+INFO:     Started server process [67154]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'main.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [67154]
+/Users/sittminthar/Downloads/DentalBridge-master/DentalBridge/backend/main.py:17: FutureWarning: 
+
+All support for the `google.generativeai` package has ended. It will no longer be receiving 
+updates or bug fixes. Please switch to the `google.genai` package as soon as possible.
+See README for more details:
+
+https://github.com/google-gemini/deprecated-generative-ai-python/blob/main/README.md
+
+  import google.generativeai as genai
+INFO:main:Zawgyi Font Registered Successfully from /Users/sittminthar/Downloads/DentalBridge-master/DentalBridge/backend/fonts/Zawgyi-One.ttf
+INFO:     Started server process [67162]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'main.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [67162]
+/Users/sittminthar/Downloads/DentalBridge-master/DentalBridge/backend/main.py:17: FutureWarning: 
+
+All support for the `google.generativeai` package has ended. It will no longer be receiving 
+updates or bug fixes. Please switch to the `google.genai` package as soon as possible.
+See README for more details:
+
+https://github.com/google-gemini/deprecated-generative-ai-python/blob/main/README.md
+
+  import google.generativeai as genai
+INFO:main:Zawgyi Font Registered Successfully from /Users/sittminthar/Downloads/DentalBridge-master/DentalBridge/backend/fonts/Zawgyi-One.ttf
+INFO:     Started server process [67178]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.

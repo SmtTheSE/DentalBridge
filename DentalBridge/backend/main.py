@@ -47,7 +47,7 @@ try:
         registerFontFamily('Zawgyi-One', normal='Zawgyi-One', bold='Zawgyi-One', italic='Zawgyi-One', boldItalic='Zawgyi-One')
         logger.info(f"Zawgyi Font Registered Successfully from {ZAWGYI_FONT_PATH}")
     else:
-        logger.warning(f"Zawgyi font not found at {ZAWGYI_FONT_PATH}")
+        logger.warning(f"Zawgyi font not found at {ZAWGYI_FONT_PATH}. Using default font.")
 except Exception as e:
     logger.error(f"Failed to register Zawgyi font: {e}")
 
@@ -248,6 +248,22 @@ async def analyze_file(file: UploadFile = File(...)):
 def read_root():
     return {"message": "DentalBridge Provider"}
 
+@app.get("/debug")
+def debug_env():
+    import pkg_resources
+    installed_packages = [f"{p.project_name}=={p.version}" for p in pkg_resources.working_set]
+    
+    return {
+        "cwd": os.getcwd(),
+        "files_in_cwd": os.listdir("."),
+        "fonts_dir_exists": os.path.exists(FONTS_DIR),
+        "fonts_dir_contents": os.listdir(FONTS_DIR) if os.path.exists(FONTS_DIR) else [],
+        "base_dir": BASE_DIR,
+        "zawgyi_path": ZAWGYI_FONT_PATH,
+        "installed_packages": installed_packages,
+        "env_vars": [k for k in os.environ.keys()]
+    }
+
 # --- Stateless PDF Generation ---
 def build_pdf_buffer(plan_context: PlanContext) -> io.BytesIO:
     buffer = io.BytesIO()
@@ -266,10 +282,14 @@ def build_pdf_buffer(plan_context: PlanContext) -> io.BytesIO:
     elements.append(Paragraph(f"<b>Date:</b> {datetime.utcnow().strftime('%Y-%m-%d')}", normal_style))
     elements.append(Spacer(1, 24))
     
-    zawgyi_style = ParagraphStyle('ZawgyiStyle', parent=normal_style, fontName='Zawgyi-One', fontSize=10, leading=14)
+    # Determine if Zawgyi is available
+    font_name = 'Zawgyi-One' if 'Zawgyi-One' in pdfmetrics.getRegisteredFontNames() else 'Helvetica'
+    zawgyi_style = ParagraphStyle('ZawgyiStyle', parent=normal_style, fontName=font_name, fontSize=10, leading=14)
     
     def to_zawgyi(text):
         if not text: return ""
+        # If we don't have the font, don't convert to weird encoding
+        if font_name != 'Zawgyi-One': return text 
         try:
             return mmfont.converter.uni512zg1(text)
         except:
