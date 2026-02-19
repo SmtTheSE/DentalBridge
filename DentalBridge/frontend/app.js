@@ -147,8 +147,7 @@ saveBtn.addEventListener('click', async () => {
     downloadPdfBtn.hidden = false;
     downloadPdfBtn.disabled = false;
 
-    // Enable Chat immediately (Stateless)
-    enableChat();
+    // Chat Removed per user request (Quota limits)
 });
 
 // --- 4. Download PDF (Stateless) ---
@@ -249,115 +248,4 @@ function showNotification(message, type = 'info') {
     setTimeout(() => {
         notif.classList.remove('visible');
     }, 4000);
-}
-
-// Replace alerts
-// (Note: This function replaces the previous alerts implicitly when we update the calls)
-
-// ---------------------------
-// AI Consultant (Chat) Logic
-// ---------------------------
-const chatSection = document.getElementById('chat-container');
-const chatHistory = document.getElementById('chat-history');
-const chatInput = document.getElementById('chat-input');
-const chatSendBtn = document.getElementById('chat-send-btn');
-
-// Enable chat after save
-function enableChat() {
-    chatSection.hidden = false;
-    // Scroll to chat
-    setTimeout(() => {
-        chatSection.scrollIntoView({ behavior: 'smooth' });
-    }, 500);
-
-    // Greeting if empty
-    if (chatHistory.children.length === 0) {
-        appendMessage("Secure Link Established. I have access to the treatment plan. How can I assist?", 'ai');
-    }
-}
-
-// Send Message
-async function sendChatMessage() {
-    const message = chatInput.value.trim();
-    if (!message) return; // Removed activePlanId check
-
-    // Append User Message
-    appendMessage(message, 'user');
-    chatInput.value = '';
-    chatInput.disabled = true;
-    chatSendBtn.disabled = true;
-
-    // Add loading indicator
-    const loadingId = appendMessage("Thinking...", 'ai', true);
-
-    const patientName = patientNameInput.value.trim() || 'Unknown Patient';
-
-    try {
-        const response = await fetch(`${API_URL}/chat`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                items: currentItems, // Send full context
-                patient_name: patientName,
-                message: message
-            })
-        });
-
-        // Remove loading
-        removeMessage(loadingId);
-
-        if (!response.ok) throw new Error('Chat failed');
-        const data = await response.json();
-
-        // Append AI Message
-        appendMessage(data.response, 'ai');
-
-    } catch (error) {
-        removeMessage(loadingId);
-        console.error(error);
-        showNotification("Consultant Unavailable. Try again.", "error");
-        appendMessage("CONNECTION_LOST... PLEASE RETRY.", 'ai');
-    } finally {
-        chatInput.disabled = false;
-        chatSendBtn.disabled = false;
-        chatInput.focus();
-    }
-}
-
-function appendMessage(text, sender, isLoading = false) {
-    const msgDiv = document.createElement('div');
-    const msgId = 'msg-' + Date.now();
-    msgDiv.id = msgId;
-    msgDiv.className = `chat-message chat-${sender}`;
-    if (isLoading) msgDiv.style.opacity = 0.7;
-
-    // Format text slightly (convert newlines)
-    msgDiv.innerHTML = sender === 'ai' && !isLoading ? marked_lite(text) : text;
-
-    chatHistory.appendChild(msgDiv);
-    chatHistory.scrollTop = chatHistory.scrollHeight;
-    return msgId;
-}
-
-function removeMessage(id) {
-    const el = document.getElementById(id);
-    if (el) el.remove();
-}
-
-// Simple markdown parser for bold/newlines
-function marked_lite(text) {
-    if (!text) return "";
-    return text
-        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-        .replace(/\n/g, '<br>');
-}
-
-if (chatSendBtn) {
-    chatSendBtn.addEventListener('click', sendChatMessage);
-}
-
-if (chatInput) {
-    chatInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') sendChatMessage();
-    });
 }

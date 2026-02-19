@@ -68,14 +68,10 @@ class DentalItemPydantic(BaseModel):
     price: Optional[float] = Field(None, description="Cost")
     urgency_hook: Optional[str] = Field(None, description="Persuasive text")
 
-# Context for PDF and Chat (Stateless)
+# Context for PDF (Stateless)
 class PlanContext(BaseModel):
     items: List[DentalItemPydantic]
     patient_name: str = "Unknown Patient"
-
-# Chat Request extends Context
-class ChatRequest(PlanContext):
-    message: str
 
 # System Prompt
 SYSTEM_PROMPT = """
@@ -327,40 +323,5 @@ async def generate_pdf(request: PlanContext):
     headers = {'Content-Disposition': f'attachment; filename="{filename}"'}
     return Response(content=pdf_buffer.getvalue(), headers=headers, media_type="application/pdf")
 
-# --- Stateless Chat ---
-@app.post("/chat")
-async def chat_with_consultant(request: ChatRequest):
-    # Context Construction
-    plan_summary = f"Patient: {request.patient_name}\nItems:\n"
-    for item in request.items:
-        plan_summary += f"- {item.friendly_name} ({item.technical_name}): {item.explanation}. Cost: {item.price} MMK. Urgency: {item.urgency}\n"
-        
-    chat_prompt = f"""
-    CONTEXT:
-    You are an expert Dental Treatment Coordinator assistant. 
-    You are discussing the following treatment plan with a patient (or their dentist):
-    
-    {plan_summary}
-    
-    USER QUESTION: "{request.message}"
-    
-    INSTRUCTION:
-    Answer the question based *only* on the provided plan and general dental knowledge. 
-    Be professional, reassuring, and concise. 
-    If the user asks about costs, refer to the specific prices in the plan.
-    Keep answers under 3-4 sentences if possible.
-    """
-    
-    models_to_try = ["gemini-2.0-flash", "gemini-flash-latest", "gemini-2.5-flash-lite"]
-    
-    for model_name in models_to_try:
-        try:
-            logger.info(f"Chat attempt to {model_name}...")
-            model = genai.GenerativeModel(model_name)
-            response = await model.generate_content_async(chat_prompt)
-            return {"response": response.text}
-        except Exception as e:
-            logger.warning(f"Chat model {model_name} failed: {e}")
-            continue
-            
-    raise HTTPException(status_code=500, detail="AI Consultant is currently unavailable. Check logs for details.")
+    headers = {'Content-Disposition': f'attachment; filename="{filename}"'}
+    return Response(content=pdf_buffer.getvalue(), headers=headers, media_type="application/pdf")
