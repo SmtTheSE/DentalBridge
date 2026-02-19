@@ -331,6 +331,3 @@ async def generate_pdf(request: PlanContext):
     
     headers = {'Content-Disposition': f'attachment; filename="{filename}"'}
     return Response(content=pdf_buffer.getvalue(), headers=headers, media_type="application/pdf")
-
-    headers = {'Content-Disposition': f'attachment; filename="{filename}"'}
-    return Response(content=pdf_buffer.getvalue(), headers=headers, media_type="application/pdf")

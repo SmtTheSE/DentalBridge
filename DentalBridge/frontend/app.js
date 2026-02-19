@@ -64,15 +64,22 @@ analyzeBtn.addEventListener('click', async () => {
         });
 
         if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.detail || 'Analysis failed');
+            const errorText = await response.text();
+            console.error("API Error Response:", errorText);
+            try {
+                const errorData = JSON.parse(errorText);
+                throw new Error(errorData.detail || 'Analysis failed');
+            } catch (e) {
+                throw new Error(`Server Error (${response.status}): ${errorText.substring(0, 100)}...`);
+            }
         }
 
         const data = await response.json();
         currentItems = data;
         displayResults(data);
     } catch (error) {
-        showNotification('Error analyzing file: ' + error.message, 'error');
+        console.error("Full Error:", error);
+        showNotification('Error: ' + error.message, 'error');
         showUpload();
     }
 });
