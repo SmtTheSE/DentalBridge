@@ -171,11 +171,12 @@ async def call_llm(content_parts: list) -> List[DentalItemPydantic]:
             errors.append(f"{model_name}: {str(e)}")
             return None
 
-    content = await try_generate("gemini-2.0-flash", True)
+    # Try models in order from best to most available
+    content = await try_generate("gemini-2.0-flash", True)       # Best quality
     if not content:
-        content = await try_generate("gemini-1.5-flash", True)
+        content = await try_generate("gemini-2.0-flash-lite", True)  # Higher quota limit
     if not content:
-        content = await try_generate("gemini-1.5-pro", True)
+        content = await try_generate("gemini-flash-lite-latest", True)  # Alias fallback
         
     if not content:
         logger.error(f"All Gemini models failed. Errors: {errors}")
